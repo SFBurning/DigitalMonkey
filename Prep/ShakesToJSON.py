@@ -11,12 +11,16 @@ def getFilePath(argv):
 def parseLine(sourceFile):
 	if debugMode:
 		print "Starting"
-	chapterPattern = re.compile("(?<=-->)(.*\n*)*(?=-->)")
+	chapterPattern = re.compile("/(?<=-->)(.*\n*)*(?=-->)/")
 	source = open(sourceFile, 'r')
-	sourceText = ""
-	with open(sourceFile, "r") as myFile:
-		sourceText = myFile.read().replace("\r","")
-	result = chapterPattern.match(sourceText)
+	sourceText = source.read(10000)
+	match = chapterPattern.match(sourceText)
+	result = ""
+	if match:
+		result = match.group(0)
+		print(result)
+	print("match is " + str(match))
+
 	testFile = open("intermediary.txt", "w")
 	testFile.close()
 	testFile = open("intermediary.txt", "a")
